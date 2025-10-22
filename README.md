@@ -385,6 +385,88 @@ Kemudian jalankan ``curl static.K37.com/annals/`` untuk Menguji akses melalui ho
 ## Soal 13
 ## Soal 14
 ## Soal 15
+Pelabuhan diuji gelombang kecil, salah satu klien yakni Elrond menjadi penguji dan menggunakan ApacheBench (ab) untuk membombardir http://www.<xxxx>.com/app/ dan http://www.<xxxx>.com/static/ melalui hostname kanonik. Untuk setiap endpoint lakukan 500 request dengan concurrency 10, dan rangkum hasil dalam tabel ringkas.
+
+### 1. Tambahkan script untuk instalasi nginx secara manual di Lindon
+
+<img width="641" height="169" alt="Screenshot 2025-10-22 203637" src="https://github.com/user-attachments/assets/da9f45c5-2e61-4871-a627-43eda5145092" />
+
+Tambahkan permission
+```bash
+chmod +x /root/install_nginx_nosystemd.sh
+```
+
+Jalankan script nya
+```bash
+/root/install_nginx_nosystemd.sh
+```
+
+### 2. Buat script konfigurasi web statis di Lindon
+
+<img width="568" height="418" alt="Image" src="https://github.com/user-attachments/assets/f7a15d2a-e9c9-4776-9174-f5e6fe1ce954" />
+
+Tambahkan permission
+```bash
+chmod +x /root/create_static_site_nosystemd.sh
+```
+
+Jalankan script nya
+```bash
+/root/create_static_site_nosystemd.sh
+```
+
+Tes apakah nginx sudah berjalan atau belum
+```bash
+curl -s -H "Host: static.K37.com" http://127.0.0.1/ | head -n 10
+```
+<img width="723" height="188" alt="Image" src="https://github.com/user-attachments/assets/153fe685-9739-4abb-b12b-9c7e325449b1" />
+
+Tes menggunakan autoindex
+```bash
+curl -s -H "Host: static.K37.com" http://127.0.0.1/annals/ | head -n 10
+```
+<img width="728" height="236" alt="Image" src="https://github.com/user-attachments/assets/315b785f-2aeb-4685-9595-8f40bab3b5c6" />
+
+### 3. Pindah ke terminal client Elrond
+
+Tambahkan entri di /etc/hosts klien
+```bash
+bash -c 'echo "10.82.2.3 static.K37.com" >> /etc/hosts'
+```
+
+Pastikan entri berhasil ditambahkan
+```bash
+cat /etc/hosts
+```
+<img width="412" height="152" alt="Image" src="https://github.com/user-attachments/assets/80c60cb8-b589-4983-a59f-da42d2984d39" />
+
+Coba ping
+```bash
+ping -c 3 static.K37.com
+```
+
+### 4. Melakukan bombardir
+
+Install ApacheBench
+```bash
+apt update && apt install -y apache2-utils
+```
+
+Pastikan www.<GROUP>.com resolve ke IP Lindon dari Elrond
+```bash
+getent hosts "www.K37.com" || ping -c1 "www.K37.com"
+```
+<img width="618" height="41" alt="Image" src="https://github.com/user-attachments/assets/6a854569-abc0-4a64-b771-78fda4aa4227" />
+
+Jika DNS sudah resolve www.K37.com dari klien (Elrond), jalankan:
+```bash
+ab -n 500 -c 10 http://www.K37.com/app/
+ab -n 500 -c 10 http://www.K37.com/static/
+```
+
+<img width="684" height="383" alt="Image" src="https://github.com/user-attachments/assets/c3ecd6b2-4524-450d-9514-21ac1a4c82cc" />
+Dengan menjalankan kedua perintah di atas, maka akan mendapatkan beberapa output seperti Concurrency level, Complete requests, Failed requests, Requests per second, Time per request, dan Transfer rate.
+
 ## Soal 16
 ## Soal 17
 ## Soal 18
