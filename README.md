@@ -379,6 +379,8 @@ Kemudian untuk Verifikasi Akhir Di Klien Earendil, jalankan ``dig static.K37.com
 
 Kemudian jalankan ``curl static.K37.com/annals/`` untuk Menguji akses melalui hostname.
 
+<img width="870" height="96" alt="image" src="https://github.com/user-attachments/assets/5cbfee56-e976-4e11-9b38-fdbde9938446" />
+
 ## Soal 10
 ## Soal 11
 ## Soal 12
